@@ -15,7 +15,7 @@ describe("when there is initially one user saved", () => {
     await helper.createUser(helper.rootUserData);
   });
 
-  test.only("fetching users returns the correct amount of users as JSON in the expected format", async () => {
+  test("fetching users returns the correct amount of users as JSON in the expected format", async () => {
     const response = await api
       .get("/api/users")
       .expect(200)
@@ -32,7 +32,7 @@ describe("when there is initially one user saved", () => {
     assert.strictEqual(user.password, undefined);
   });
 
-  test.only("creation succeeds with a not already-used username", async () => {
+  test("creation succeeds with a not already-used username", async () => {
     const usersAtStart = await helper.usersInDb();
 
     const newUser = {
@@ -54,7 +54,7 @@ describe("when there is initially one user saved", () => {
     assert(usernames.includes(newUser.username));
   });
 
-  test.only("creation fails with proper statuscode and message if username already taken", async () => {
+  test("creation fails with proper statuscode and message if username already taken", async () => {
     const usersAtStart = await helper.usersInDb();
 
     const newUser = {
@@ -75,7 +75,7 @@ describe("when there is initially one user saved", () => {
     assert.strictEqual(usersAtEnd.length, usersAtStart.length);
   });
 
-  test.only("user creation should fail if password is missing or shorter than 3 characters", async () => {
+  test("user creation should fail if password is missing or shorter than 3 characters", async () => {
     const usersAtStart = await helper.usersInDb();
 
     const newUserWithoutPassword = {
@@ -106,7 +106,7 @@ describe("when there is initially one user saved", () => {
     assert.strictEqual(usersAtEnd.length, usersAtStart.length);
   });
 
-  test.only("user creation should fail if username is missing or shorter than 3 characters", async () => {
+  test("user creation should fail if username is missing or shorter than 3 characters", async () => {
     const usersAtStart = await helper.usersInDb();
 
     const newUserWithoutUsername = {
@@ -142,7 +142,7 @@ describe("when there is initially one user saved", () => {
     assert.strictEqual(usersAtEnd.length, usersAtStart.length);
   });
 
-  test.only("a HTTP POst request to /api/login with valid credentials returns a token", async () => {
+  test("a HTTP POst request to /api/login with valid credentials returns a token", async () => {
     const loginData = {
       username: "root",
       password: "sekret",
@@ -157,7 +157,7 @@ describe("when there is initially one user saved", () => {
     assert(response.body.token);
   });
 
-  test.only("a HTTP POST request to /api/login with invalid credentials fails with status code 401", async () => {
+  test("a HTTP POST request to /api/login with invalid credentials fails with status code 401", async () => {
     const invalidPasswordData = {
       username: "root",
       password: "wrongpassword",
@@ -176,7 +176,7 @@ describe("when there is initially one user saved", () => {
     }
   });
 
-  test.only("a HTTP POST request to /api/login with missing username or password fails with status code 400", async () => {
+  test("a HTTP POST request to /api/login with missing username or password fails with status code 400", async () => {
     const missingUsernameData = {
       password: "sekret",
     };
@@ -231,7 +231,7 @@ describe("when there are initially some blogs saved and one user created", () =>
     await createInitialBlogsForRootUser();
   });
 
-  test.only("an HTTP GET request to the /api/blogs URL returns the correct amount the blog posts as JSON", async () => {
+  test("an HTTP GET request to the /api/blogs URL returns the correct amount the blog posts as JSON", async () => {
     const response = await api
       .get("/api/blogs")
       .expect(200)
@@ -241,7 +241,7 @@ describe("when there are initially some blogs saved and one user created", () =>
     assert.strictEqual(blogs.length, helper.initialBlogs.length);
   });
 
-  test.only("the unique identifier property of the blog posts is named id", async () => {
+  test("the unique identifier property of the blog posts is named id", async () => {
     const response = await api
       .get("/api/blogs")
       .expect(200)
@@ -255,7 +255,7 @@ describe("when there are initially some blogs saved and one user created", () =>
   });
 
   describe("addition of a new blog", () => {
-    test.only("an HTTP POST request to the /api/blogs URL should failed, when credentials are missing", async () => {
+    test("an HTTP POST request to the /api/blogs URL should failed, when credentials are missing", async () => {
       const newBlog = {
         title: "Test Blog",
         author: "Test Author",
@@ -266,7 +266,7 @@ describe("when there are initially some blogs saved and one user created", () =>
       await api.post("/api/blogs").send(newBlog).expect(401);
     });
 
-    test.only("an HTTP POST request to the /api/blogs URL should failed if the token is invalid", async () => {
+    test("an HTTP POST request to the /api/blogs URL should failed if the token is invalid", async () => {
       const newBlog = {
         title: "Test Blog",
         author: "Test Author",
@@ -282,7 +282,7 @@ describe("when there are initially some blogs saved and one user created", () =>
         .expect(401);
     });
 
-    test.only("an HTTP POST request to the /api/blogs URL successfully creates a new blog post with valid data and token", async () => {
+    test("an HTTP POST request to the /api/blogs URL successfully creates a new blog post with valid data and token", async () => {
       const token = await loginRootUserAndGetToken();
 
       const newBlog = {
@@ -322,7 +322,7 @@ describe("when there are initially some blogs saved and one user created", () =>
       assert(userBlogTitles.includes(newBlog.title));
     });
 
-    test.only("if the likes property is missing from the request, it will default to the value 0 with valid credentials", async () => {
+    test("if the likes property is missing from the request, it will default to the value 0 with valid credentials", async () => {
       const token = await loginRootUserAndGetToken();
 
       const newBlogWithoutLikes = {
@@ -342,7 +342,7 @@ describe("when there are initially some blogs saved and one user created", () =>
       assert.strictEqual(createdBlog.likes, 0);
     });
 
-    test.only("if the title or url properties are missing from the request, respond with status code 400 Bad Request, even if credentials are valid", async () => {
+    test("if the title or url properties are missing from the request, respond with status code 400 Bad Request, even if credentials are valid", async () => {
       const token = await loginRootUserAndGetToken();
 
       const newBlogWithoutTitle = {
@@ -371,7 +371,7 @@ describe("when there are initially some blogs saved and one user created", () =>
   });
 
   describe("deletion of a blog", () => {
-    test.only("fails with status code 401 if token is missing", async () => {
+    test("fails with status code 401 if token is missing", async () => {
       const blogsAtStart = await helper.blogsInDb();
       const blogToDelete = blogsAtStart[0];
 
@@ -383,7 +383,7 @@ describe("when there are initially some blogs saved and one user created", () =>
       assert(titles.includes(blogToDelete.title));
     });
 
-    test.only("fails with status code 401 if token is invalid", async () => {
+    test("fails with status code 401 if token is invalid", async () => {
       const blogsAtStart = await helper.blogsInDb();
       const blogToDelete = blogsAtStart[0];
       const invalidToken = "ey-this-is-an-invalid-token-12345";
@@ -399,7 +399,7 @@ describe("when there are initially some blogs saved and one user created", () =>
       assert(titles.includes(blogToDelete.title));
     });
 
-    test.only("deletes successfully the blog with status code 204 if id is valid, and the blog owner is the logged-in user", async () => {
+    test("deletes successfully the blog with status code 204 if id is valid, and the blog owner is the logged-in user", async () => {
       const token = await loginRootUserAndGetToken();
       const blogsAtStart = await helper.blogsInDb();
       const blogToDelete = blogsAtStart[0];
@@ -416,7 +416,7 @@ describe("when there are initially some blogs saved and one user created", () =>
       assert(!titles.includes(blogToDelete.title));
     });
 
-    test.only("fails with status code 403 if the logged-in user is not the owner of the blog", async () => {
+    test("fails with status code 403 if the logged-in user is not the owner of the blog", async () => {
       // Create a new user and login to get a token
       const newUser = {
         username: "anotheruser",
@@ -450,7 +450,7 @@ describe("when there are initially some blogs saved and one user created", () =>
       assert(titles.includes(blogToDelete.title));
     });
 
-    test.only("fails with status code 400 if id does not exist even if an user is logged-in", async () => {
+    test("fails with status code 400 if id does not exist even if an user is logged-in", async () => {
       const token = await loginRootUserAndGetToken();
       const blogsAtStart = await helper.blogsInDb();
 
@@ -464,7 +464,7 @@ describe("when there are initially some blogs saved and one user created", () =>
       assert.strictEqual(blogsAtEnd.length, blogsAtStart.length);
     });
 
-    test.only("fails with status code 400 if id is malformatted", async () => {
+    test("fails with status code 400 if id is malformatted", async () => {
       const token = await loginRootUserAndGetToken();
       const blogsAtStart = await helper.blogsInDb();
 
@@ -487,7 +487,7 @@ describe("when there are initially some blogs saved and one user created", () =>
       likes: 20,
     };
 
-    test.only("updates successfully the blog with status code 200 if id is valid", async () => {
+    test("updates successfully the blog with status code 200 if id is valid", async () => {
       const blogsAtStart = await helper.blogsInDb();
       const blogToUpdate = blogsAtStart[0];
 
@@ -512,7 +512,7 @@ describe("when there are initially some blogs saved and one user created", () =>
       assert.deepStrictEqual(updatedBlogInDb, updatedBlog);
     });
 
-    test.only("fails with status code 400 if id does not exist", async () => {
+    test("fails with status code 400 if id does not exist", async () => {
       const nonExistingId = Array(24).fill("0").join("");
       await api
         .put(`/api/blogs/${nonExistingId}`)
@@ -520,7 +520,7 @@ describe("when there are initially some blogs saved and one user created", () =>
         .expect(400);
     });
 
-    test.only("fails with status code 400 if id is malformatted", async () => {
+    test("fails with status code 400 if id is malformatted", async () => {
       const malformattedId = "malformatted-id";
       await api
         .put(`/api/blogs/${malformattedId}`)
@@ -528,7 +528,7 @@ describe("when there are initially some blogs saved and one user created", () =>
         .expect(400);
     });
 
-    test.only("fails with status code 400 if title or url is missing", async () => {
+    test("fails with status code 400 if title or url is missing", async () => {
       const blogsAtStart = await helper.blogsInDb();
       const blogToUpdate = blogsAtStart[0];
 
@@ -554,7 +554,7 @@ describe("when there are initially some blogs saved and one user created", () =>
         .expect(400);
     });
 
-    test.only("if the likes property is missing from the request, it will default to the value 0", async () => {
+    test("if the likes property is missing from the request, it will default to the value 0", async () => {
       const blogsAtStart = await helper.blogsInDb();
       const blogToUpdate = blogsAtStart[0];
 
